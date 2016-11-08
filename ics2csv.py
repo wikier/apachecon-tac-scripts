@@ -22,6 +22,9 @@ from icalendar import Calendar
 import csv
 
 
+stopwords = ["breakfast", "registration", "sponsor showcase", "coffee break", "lunch break", "barcamp", "keynote"]
+
+
 def ics2csv(ics, name=None):
     """
     Transforms a ICS files to CSV
@@ -30,6 +33,7 @@ def ics2csv(ics, name=None):
 
     name: conference name (optional)
     """
+
     logging.basicConfig(level=logging.DEBUG, format="\033[1m%(name)s\033[0m %(message)s")
     logging.getLogger("requests").setLevel(logging.WARNING)
     log = logging.getLogger("tac")
@@ -52,11 +56,13 @@ def ics2csv(ics, name=None):
                 title = component.get('summary')
                 time = component.get('dtstart').dt.strftime("%Y-%m-%d %H:%M")
                 location = re.sub(', Seville, Spain$', '', component.get('location'))
-                slots.append((title, location, time))
+
+                if not any(stopword in title.lower() for stopword in stopwords):
+                    slots.append((title, location, time))
 
     with open(csv_path, "w") as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
-        writer.writerow(["talk", "room", "time", "volunteer", "backup"])
+        #writer.writerow(["talk", "room", "time", "volunteer", "backup"])
         for slot in slots:
             writer.writerow(slot)
     log.info("Exported %d talks to %s", len(slots), csv_path)
