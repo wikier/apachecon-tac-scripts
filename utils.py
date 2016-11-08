@@ -15,8 +15,8 @@
 import requests
 
 
-def download_file(url):
-    local_filename = url.split('/')[-1]
+def download_file(url, name=None):
+    local_filename = url.split('/')[-1] if name is None else name
     r = requests.get(url, stream=True)
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024):

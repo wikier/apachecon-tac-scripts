@@ -22,23 +22,30 @@ from icalendar import Calendar
 import csv
 
 
-def ics2csv(ics):
+def ics2csv(ics, name=None):
     """
     Transforms a ICS files to CSV
 
     ics: ics path or url
+
+    name: conference name (optional)
     """
     logging.basicConfig(level=logging.DEBUG, format="\033[1m%(name)s\033[0m %(message)s")
     logging.getLogger("requests").setLevel(logging.WARNING)
     log = logging.getLogger("tac")
 
+    if name is None:
+        name = splitext(basename(ics))[0]
+
+    csv_path = "%s.csv" % name
+    ics_path = "%s.ics" % name
+
     if ics.startswith("http") or ics.startswith("http"):
-        url = ics
-        ics = download_file(url)
-        log.debug("Downloaded %s at %s", url, ics)
+        ics_path = download_file(ics, ics_path)
+        log.debug("Downloaded %s at %s", ics, ics_path)
 
     slots = []
-    with open(ics, 'r') as g:
+    with open(ics_path, 'r') as g:
         gcal = Calendar.from_ical(g.read())
         for component in gcal.walk():
             if component.name == "VEVENT":
@@ -47,7 +54,6 @@ def ics2csv(ics):
                 location = re.sub(', Seville, Spain$', '', component.get('location'))
                 slots.append((title, location, time))
 
-    csv_path = "%s.csv" % splitext(basename(ics))[0]
     with open(csv_path, "w") as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerow(["talk", "room", "time", "volunteer", "backup"])
