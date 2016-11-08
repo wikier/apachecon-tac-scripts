@@ -19,7 +19,7 @@ tac Exported 128 talks to apachebigdataeu2016.csv
 ```
 
 ```
-$ python3 ics2csv.py http://apacheconeu2016.sched.org/all.ics apachebigdataeu2016
+$ python3 ics2csv.py http://apacheconeu2016.sched.org/all.ics apacheconeu2016
 tac Downloaded http://apacheconeu2016.sched.org/all.ics at apacheconeu2016.ics
 tac Exported 124 talks to apacheconeu2016.csv
 ```
