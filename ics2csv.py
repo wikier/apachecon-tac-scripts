@@ -19,6 +19,8 @@ from utils import download_file
 import re
 from os.path import basename, splitext
 from icalendar import Calendar
+import datetime
+import pytz
 import csv
 
 
@@ -54,11 +56,14 @@ def ics2csv(ics, name=None):
         for component in gcal.walk():
             if component.name == "VEVENT":
                 title = component.get('summary')
-                time = component.get('dtstart').dt.strftime("%Y-%m-%d %H:%M")
-                location = re.sub(', Seville, Spain$', '', component.get('location'))
+                start_time_utc = component.get('dtstart').dt
+                local_tz = pytz.timezone('Europe/Madrid')  # TODO: arg
+                start_time_local = start_time_utc.astimezone(local_tz)
+                start = start_time_local.strftime("%Y-%m-%d %H:%M")
+                location = re.sub(', Seville, Spain$', '', component.get('location'))   # TODO: arg
 
                 if not any(stopword in title.lower() for stopword in stopwords):
-                    slots.append((title, location, time))
+                    slots.append((title, location, start))
 
     with open(csv_path, "w") as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
