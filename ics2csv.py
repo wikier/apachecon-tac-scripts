@@ -24,7 +24,17 @@ import pytz
 import csv
 
 
-stopwords = ["breakfast", "registration", "sponsor showcase", "coffee break", "lunch break", "barcamp", "keynote"]
+stopwords = [
+    "breakfast",
+    "registration",
+    "sponsor showcase",
+    "coffee break",
+    "lunch break",
+    "barcamp",
+    "keynote",
+    "morning run",
+    "attendee reception"
+]
 
 
 def ics2csv(ics, name=None):
