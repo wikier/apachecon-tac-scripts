@@ -13,13 +13,13 @@ pip install -r requirements.txt --upgrade
 # Usage 
 
 ```
-$ python3 ics2csv.py https://apachebigdataeu2017.sched.org/all.ics apachebigdataeu2017
+$ python3 ics2csv.py https://apachebigdata2017.sched.org/all.ics apachebigdataeu2017
 tac Downloaded https://apachebigdataeu2017.sched.org/all.ics at apachebigdataeu2017.ics
 tac Exported 104 talks to apachebigdataeu2017.csv
 ```
 
 ```
-$ python3 ics2csv.py http://apacheconeu2017.sched.org/all.ics apacheconeu2017
+$ python3 ics2csv.py https://apachecon2017.sched.com/all.ics apacheconeu2017
 tac Downloaded http://apacheconeu2017.sched.org/all.ics at apacheconeu2017.ics
 tac Exported 108 talks to apacheconeu2017.csv
 ```
