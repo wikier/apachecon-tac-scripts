@@ -29,11 +29,12 @@ stopwords = [
     "registration",
     "sponsor showcase",
     "coffee break",
-    "lunch break",
+    "lunch"
     "barcamp",
     "keynote",
     "morning run",
     "attendee reception"
+    "BarCampApache"
 ]
 
 
@@ -67,10 +68,10 @@ def ics2csv(ics, name=None):
             if component.name == "VEVENT":
                 title = component.get('summary')
                 start_time_utc = component.get('dtstart').dt
-                local_tz = pytz.timezone('Europe/Madrid')  # TODO: arg
+                local_tz = pytz.timezone('US/Eastern')  # TODO: arg
                 start_time_local = start_time_utc.astimezone(local_tz)
                 start = start_time_local.strftime("%Y-%m-%d %H:%M")
-                location = re.sub(', Seville, Spain$', '', component.get('location'))   # TODO: arg
+                location = re.sub(', Miami, FL, United States$', '', component.get('location'))   # TODO: arg
 
                 if not any(stopword in title.lower() for stopword in stopwords):
                     slots.append((title, location, start))
